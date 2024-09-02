@@ -20,6 +20,37 @@ const mainReducer = (state = initialState, action) => {
   // ora il cuore del reducer: lo switch-case
   switch (action.type) {
     // qui vanno i case
+
+    case 'ADD_TO_CART':
+      return {
+        // ritorno anche da qui SEMPRE il nuovo stato di redux
+        // devo ritornare un nuovo oggetto, la nuova "biglia",
+        // con dentro un libro in più nel carrello
+        //
+        // state.cart.content.push(action.payload) <-- V I E T A T O
+        // non possiamo modificare lo state da cui partiamo
+        ...state,
+        cart: {
+          ...state.cart,
+          content: [...state.cart.content, action.payload], // :D
+          //   content: state.cart.content.concat(action.payload), // :D
+        },
+      }
+
+    case 'REMOVE_FROM_CART':
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          //   content: [
+          //     ...state.cart.content.slice(0, action.payload),
+          //     ...state.cart.content.slice(action.payload + 1),
+          //   ],
+          content: state.cart.content.filter((book, i) => i !== action.payload),
+          // action.payload è l'indice da rimuovere
+        },
+      }
+
     default: {
       // il default cattura tutti i casi che NON sono rientrati
       // nei precedenti switch case
